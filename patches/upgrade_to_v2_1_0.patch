@@ -1,0 +1,242 @@
+Index: scripts/process-images.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/scripts/process-images.js b/scripts/process-images.js
+--- a/scripts/process-images.js	(revision bf2560f309dee5e995a1f82f45f097976329bf52)
++++ b/scripts/process-images.js	(revision 40e65437154db60764d4a4c87028dc13d749fa52)
+@@ -11,7 +11,7 @@
+  * @typedef {Object} ImageMetadata
+  * @property {string} filename - The name of the image file
+  * @property {string} label - User-defined label for the image
+- * @property {Tag[]} tags - Array of tags associated with the image
++ * @property {string[]} tags - Array of tag names associated with the image
+  */
+ 
+ /** @type {ImageMetadata[]} */
+@@ -129,15 +129,15 @@
+ }
+ 
+ /**
+- * Ensures that the input is an array of Tags
+- * @param {Tag|Tag[]|undefined} input - The input to check
+- * @returns {Tag[]} - An array of Tags
++ * Ensures that the input is an array of tag names
++ * @param {string|string[]|undefined} input - The input to check
++ * @returns {string[]} - An array of tag names
+  */
+ function ensureTagArray(input) {
+   if (Array.isArray(input)) {
+-    return input.filter(tag => tag && typeof tag === 'object' && 'name' in tag);
++    return input.filter(tag => typeof tag === 'string');
+   }
+-  if (input && typeof input === 'object' && 'name' in input) {
++  if (typeof input === 'string') {
+     return [input];
+   }
+   return [];
+@@ -146,13 +146,13 @@
+ /**
+  * Updates metadata for a given image
+  * @param {string} imagePath - The relative path of the image
+- * @param {Tag[]} tags - The tags to set for the image
++ * @param {string[]} tags - The tag names to set for the image
+  * @param {string} label - The label for the image
+  */
+ function updateImageMetadata(imagePath, tags, label) {
+   const index = imageMetadata.findIndex(img => img.filename === imagePath);
+   const safeLabel = label || '';
+-  const safeTags = ensureTagArray(tags);
++  const safeTags = Array.isArray(tags) ? tags : [];
+ 
+   if (index !== -1) {
+     imageMetadata[index].tags = safeTags;
+@@ -165,8 +165,8 @@
+ /**
+  * Prompts user to select tags using checkboxes
+  * @param {string} imageName - Name of the image being tagged
+- * @param {Tag[]} currentTags - Current tags of the image
+- * @returns {Promise<Tag[]>} - Array of selected tags
++ * @param {string[]} currentTags - Current tag names of the image
++ * @returns {Promise<string[]>} - Array of selected tag names
+  */
+ async function promptForTags(imageName, currentTags) {
+   console.log(`Selecting tags for ${imageName}`);
+@@ -175,8 +175,8 @@
+ 
+   const choices = allTags.map(tag => ({
+     name: `${tag.name} - ${tag.description}`,
+-    value: tag,
+-    checked: safeCurrentTags.some(t => t.name === tag.name)
++    value: tag.name,
++    checked: safeCurrentTags.includes(tag.name)
+   }));
+ 
+   console.log(`Preparing to show tag selection menu for ${imageName}`);
+@@ -285,6 +285,18 @@
+   await loadMetadata();
+   await loadTagConfig();
+ 
++  // Check if metadata needs to be migrated
++  const needsMigration = imageMetadata.some(img => img.tags && img.tags.some(tag => typeof tag === 'object'));
++  if (needsMigration) {
++    console.log('Migrating metadata to new format...');
++    imageMetadata = imageMetadata.map(img => ({
++      ...img,
++      tags: img.tags.map(tag => typeof tag === 'object' ? tag.name : tag)
++    }));
++    await saveMetadata();
++    console.log('Metadata migration completed.');
++  }
++
+   if (process.argv.includes('--compress-only')) {
+     console.log('Running in compression-only mode');
+     await compressImages(baseImageDir);
+@@ -339,12 +351,18 @@
+     }
+ 
+     if (action === 'view') {
++      const allTags = getAllTags();
+       for (const image of imageMetadata) {
+         console.log(`${image.filename}:`);
+         console.log(`  Label: ${image.label}`);
+-        console.log(`  Tags: ${image.tags.map(t => t.name).join(', ')}`);
+-        for (const tag of image.tags) {
+-          console.log(`    - ${tag.name}: ${tag.description}`);
++        console.log(`  Tags: ${image.tags.join(', ')}`);
++        for (const tagName of image.tags) {
++          const fullTag = allTags.find(t => t.name === tagName);
++          if (fullTag) {
++            console.log(`    - ${fullTag.name}: ${fullTag.description}`);
++          } else {
++            console.log(`    - ${tagName}: Description not found`);
++          }
+         }
+       }
+       await input({ message: 'Press Enter to continue...' });
+Index: src/index.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/index.js b/src/index.js
+--- a/src/index.js	(revision bf2560f309dee5e995a1f82f45f097976329bf52)
++++ b/src/index.js	(revision 40e65437154db60764d4a4c87028dc13d749fa52)
+@@ -14,7 +14,7 @@
+  * @typedef {Object} ImageMetadata
+  * @property {string} filename - The name of the image file
+  * @property {string} label - User-defined label for the image
+- * @property {Tag[]} tags - Array of tags associated with the image
++ * @property {string[]} tags - Array of tag names associated with the image
+  */
+ 
+ /**
+@@ -68,7 +68,16 @@
+ function getImageMetadata() {
+   try {
+     const data = fs.readFileSync(metadataPath, 'utf8');
+-    return JSON.parse(data);
++    const metadata = JSON.parse(data);
++    const allTags = getAllTags();
++
++    return metadata.map(item => ({
++      ...item,
++      tags: item.tags.map(tagName => {
++        const fullTag = allTags.find(t => t.name === tagName);
++        return fullTag || { name: tagName, title: tagName, description: '' };
++      })
++    }));
+   } catch (error) {
+     console.error('Error reading metadata:', error);
+     return [];
+Index: src/index.test.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/index.test.js b/src/index.test.js
+--- a/src/index.test.js	(revision bf2560f309dee5e995a1f82f45f097976329bf52)
++++ b/src/index.test.js	(revision 40e65437154db60764d4a4c87028dc13d749fa52)
+@@ -74,6 +74,11 @@
+       expect(metadata.filename).toBe(imagePath);
+       expect(metadata).toHaveProperty('label');
+       expect(Array.isArray(metadata.tags)).toBe(true);
++      metadata.tags.forEach(tag => {
++        expect(tag).toHaveProperty('name');
++        expect(tag).toHaveProperty('title');
++        expect(tag).toHaveProperty('description');
++      });
+     });
+   });
+ 
+@@ -102,26 +107,25 @@
+   test('All tags used in image metadata exist in tag configuration', () => {
+     const metadata = getImageMetadata();
+     const tagConfig = getTagConfig();
+-    const allConfigTags = [...tagConfig.subject, ...tagConfig.version, ...tagConfig.general].map(tag => tag.name);
++    const allConfigTags = [...tagConfig.subject, ...tagConfig.version, ...tagConfig.general];
+ 
+     metadata.forEach(image => {
+       image.tags.forEach(tag => {
+-        expect(allConfigTags).toContain(tag.name);
++        expect(allConfigTags.some(configTag => configTag.name === tag.name)).toBeTruthy();
+       });
+     });
+   });
+ 
+   test('All tags in metadata have consistent information with tag configuration', () => {
+     const metadata = getImageMetadata();
+-    const tagConfig = getTagConfig();
+-    const allConfigTags = [...tagConfig.subject, ...tagConfig.version, ...tagConfig.general];
++    const allTags = getAllTags();
+ 
+     metadata.forEach(image => {
+-      image.tags.forEach(metadataTag => {
+-        const configTag = allConfigTags.find(tag => tag.name === metadataTag.name);
++      image.tags.forEach(tag => {
++        const configTag = allTags.find(t => t.name === tag.name);
+         expect(configTag).toBeDefined();
+-        expect(metadataTag.title).toBe(configTag.title);
+-        expect(metadataTag.description).toBe(configTag.description);
++        expect(tag.title).toBe(configTag.title);
++        expect(tag.description).toBe(configTag.description);
+       });
+     });
+   });
+Index: CHANGELOG.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+new file mode 100644
+--- /dev/null	(revision 40e65437154db60764d4a4c87028dc13d749fa52)
++++ b/CHANGELOG.md	(revision 40e65437154db60764d4a4c87028dc13d749fa52)
+@@ -0,0 +1,26 @@
++# Changelog
++
++All notable changes to this project will be documented in this file.
++
++The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
++and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
++
++## [2.1.0] - 2024-07-27
++
++### Added
++- Automatic migration feature for updating metadata to the new structure
++- New `ensureTagArray` function in `process-images.js` for consistent tag handling
++
++### Changed
++- Updated metadata structure: tags are now stored as an array of strings instead of objects
++- Modified `getImageMetadata` function to return full tag objects, maintaining backwards compatibility
++- Updated `getImageMetadataByPath` to use the new `getImageMetadata` function
++- Refactored `promptForTags` function to work with tag names instead of full tag objects
++- Updated 'view' action in CLI to display tags according to the new structure
++
++### Fixed
++- Resolved inconsistencies in tag handling across different functions
++- Updated test suite to align with the new metadata structure
++
++### Development
++- Improved code consistency and reduced redundancy in metadata processing

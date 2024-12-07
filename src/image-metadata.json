@@ -1,0 +1,36 @@
+[
+  {
+    "filename": "hero2.webp",
+    "tags": [
+      "people",
+      "1_0_0"
+    ],
+    "label": "Handsome Hero"
+  },
+  {
+    "filename": "mecha/mecha1.webp",
+    "tags": [
+      "tech",
+      "1_1_0"
+    ],
+    "label": "Flying Mecha"
+  },
+  {
+    "filename": "hero1.webp",
+    "tags": [
+      "people",
+      "hq"
+    ],
+    "label": "Super Handsome Blonde Hero"
+  },
+  {
+    "filename": "hero3.webp",
+    "tags": [],
+    "label": ""
+  },
+  {
+    "filename": "mecha/mecha2.webp",
+    "tags": [],
+    "label": ""
+  }
+]
