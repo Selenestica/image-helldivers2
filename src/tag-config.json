@@ -1,53 +1,31 @@
 {
   "subject": [
     {
-      "name": "nature",
-      "title": "Nature",
-      "description": "Images of natural landscapes, flora, or fauna"
+      "name": "Primaries",
+      "title": "primaries",
+      "description": "Images of Helldivers 2 primary weapons"
     },
     {
-      "name": "tech",
-      "title": "Technology",
-      "description": "Images related to technological devices or concepts"
+      "name": "Secondaries",
+      "title": "secondaries",
+      "description": "Images of Helldivers 2 secondary weapons"
     },
     {
-      "name": "people",
-      "title": "People",
-      "description": "Images featuring individuals or groups of people"
+      "name": "Boosters",
+      "title": "boosters",
+      "description": "Images of Helldivers 2 boosters"
+    },
+    {
+      "name": "Grenades",
+      "title": "grenades",
+      "description": "Images of Helldivers 2 grenades"
+    },
+    {
+      "name": "Stratagems",
+      "title": "stratagems",
+      "description": "Images of Helldivers 2 stratagems"
     }
   ],
-  "version": [
-    {
-      "name": "1_0_0",
-      "title": "Image set Version 1",
-      "description": "Images from Version 1"
-    },
-    {
-      "name": "1_1_0",
-      "title": "Image set Version 1.1",
-      "description": "Images from Version 1.1"
-    },
-    {
-      "name": "2_0_0",
-      "title": "Image set Version 2.0",
-      "description": "Images from Version 2"
-    }
-  ],
-  "general": [
-    {
-      "name": "hq",
-      "title": "High Quality",
-      "description": "Images with exceptional clarity and detail"
-    },
-    {
-      "name": "colorful",
-      "title": "Colorful",
-      "description": "Images with a vibrant color palette"
-    },
-    {
-      "name": "monochrome",
-      "title": "Black and White",
-      "description": "Monochrome images"
-    }
-  ]
+  "version": [],
+  "general": []
 }
