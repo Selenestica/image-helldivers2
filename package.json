@@ -1,6 +1,6 @@
 {
   "name": "image-helldivers2",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "This package contains a curated collection of images from Helldivers 2 by Arrowhead Game Studios. If any images are used inappropriately, please contact me for their immediate removal. Contributions to this repository are welcome!",
   "main": "src/index.js",
   "files": [

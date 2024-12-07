@@ -2,27 +2,27 @@
   "subject": [
     {
       "name": "Primaries",
-      "title": "primaries",
+      "title": "Primaries",
       "description": "Images of Helldivers 2 primary weapons"
     },
     {
       "name": "Secondaries",
-      "title": "secondaries",
+      "title": "Secondaries",
       "description": "Images of Helldivers 2 secondary weapons"
     },
     {
       "name": "Boosters",
-      "title": "boosters",
+      "title": "Boosters",
       "description": "Images of Helldivers 2 boosters"
     },
     {
       "name": "Grenades",
-      "title": "grenades",
+      "title": "Grenades",
       "description": "Images of Helldivers 2 grenades"
     },
     {
       "name": "Stratagems",
-      "title": "stratagems",
+      "title": "Stratagems",
       "description": "Images of Helldivers 2 stratagems"
     }
   ],
