@@ -840,24 +840,18 @@
     "label": "Vitality Enhancement"
   },
   {
-    "filename": "Anti-Tank Emplacement.webp",
-    "tags": [
-      "Stratagems"
-    ],
-    "label": "Anti-Tank Emplacement"
+    "filename": "eat12antitankemplacement.webp",
+    "tags": [],
+    "label": ""
   },
   {
-    "filename": "Directional Shield.webp",
-    "tags": [
-      "Stratagems"
-    ],
-    "label": "Directional Shield"
+    "filename": "flamesentry.webp",
+    "tags": [],
+    "label": ""
   },
   {
-    "filename": "Flame Sentry.webp",
-    "tags": [
-      "Stratagems"
-    ],
-    "label": "Flame Sentry"
+    "filename": "sh51directionalshield.webp",
+    "tags": [],
+    "label": ""
   }
 ]
