@@ -838,5 +838,26 @@
       "Boosters"
     ],
     "label": "Vitality Enhancement"
+  },
+  {
+    "filename": "Anti-Tank Emplacement.webp",
+    "tags": [
+      "Stratagems"
+    ],
+    "label": "Anti-Tank Emplacement"
+  },
+  {
+    "filename": "Directional Shield.webp",
+    "tags": [
+      "Stratagems"
+    ],
+    "label": "Directional Shield"
+  },
+  {
+    "filename": "Flame Sentry.webp",
+    "tags": [
+      "Stratagems"
+    ],
+    "label": "Flame Sentry"
   }
 ]
