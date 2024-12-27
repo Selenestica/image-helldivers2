@@ -841,17 +841,65 @@
   },
   {
     "filename": "eat12antitankemplacement.webp",
-    "tags": [],
-    "label": ""
+    "tags": [
+      "Stratagems"
+    ],
+    "label": "Anti-Tank Emplacement"
   },
   {
     "filename": "flamesentry.webp",
-    "tags": [],
-    "label": ""
+    "tags": [
+      "Stratagems"
+    ],
+    "label": "Flame Sentry"
   },
   {
     "filename": "sh51directionalshield.webp",
-    "tags": [],
-    "label": ""
+    "tags": [
+      "Stratagems"
+    ],
+    "label": "Directional Shield"
+  },
+  {
+    "filename": "cqc19stunlance.webp",
+    "tags": [
+      "Secondaries"
+    ],
+    "label": "Stun Lance"
+  },
+  {
+    "filename": "cqc30stunbaton.webp",
+    "tags": [
+      "Secondaries"
+    ],
+    "label": "Stun Baton"
+  },
+  {
+    "filename": "fastreconvehicle.webp",
+    "tags": [
+      "Stratagems"
+    ],
+    "label": "Fast Recon Vehicle"
+  },
+  {
+    "filename": "plas39acceleratorrifle.webp",
+    "tags": [
+      "Primaries"
+    ],
+    "label": "Accelerator Rifle"
+  },
+  {
+    "filename": "sta11smg.webp",
+    "tags": [
+      "Primaries"
+    ],
+    "label": "StA-11 SMG"
+  },
+  {
+    "filename": "sta52assaultrifle.webp",
+    "tags": [
+      "Primaries"
+    ],
+    "label": "StA-52 Assault Rifle"
   }
 ]
