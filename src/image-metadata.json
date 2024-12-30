@@ -901,5 +901,12 @@
       "Primaries"
     ],
     "label": "StA-52 Assault Rifle"
+  },
+  {
+    "filename": "armedresupplypods.webp",
+    "tags": [
+      "Boosters"
+    ],
+    "label": "Armed Resupply Pods"
   }
 ]
